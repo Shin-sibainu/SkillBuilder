@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 
+//https://flowbite.com/docs/components/card/
+
 const NotoSans_JP = Noto_Sans_JP({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={NotoSans_JP.className}>
-        <Header />
-        {children}
-        <Footer />
+        <main className="flex flex-col min-h-screen">
+          <Header />
+          <div className="flex-grow">{children}</div>
+          <Footer />
+        </main>
       </body>
     </html>
   );

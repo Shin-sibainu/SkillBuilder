@@ -1,0 +1,122 @@
+[
+  {
+    "id": "html",
+    "name": "HTML",
+    "image": "/html.png",
+    "url": "/html"
+  },
+  {
+    "id": "css",
+    "name": "CSS",
+    "image": "/css.png",
+    "url": "/css"
+  },
+  {
+    "id": "javascript",
+    "name": "JavaScript",
+    "image": "/javascript.png",
+    "url": "/javascript"
+  },
+  {
+    "id": "python",
+    "name": "Python",
+    "image": "/python.png",
+    "url": "/python"
+  },
+  {
+    "id": "php",
+    "name": "PHP",
+    "image": "/php.png",
+    "url": "/php"
+  },
+  {
+    "id": "ruby",
+    "name": "Ruby",
+    "image": "/ruby.png",
+    "url": "/ruby"
+  },
+  {
+    "id": "react",
+    "name": "React",
+    "image": "/react.png",
+    "url": "/react"
+  },
+  {
+    "id": "nextjs",
+    "name": "Next.js",
+    "image": "/nextjs.png",
+    "url": "/nextjs"
+  },
+  {
+    "id": "django",
+    "name": "Django",
+    "image": "/django.png",
+    "url": "/django"
+  },
+  {
+    "id": "angular",
+    "name": "Angular",
+    "image": "/angular.png",
+    "url": "/angular"
+  },
+  {
+    "id": "nodejs",
+    "name": "Node.js",
+    "image": "/nodejs.png",
+    "url": "/nodejs"
+  },
+  {
+    "id": "vuejs",
+    "name": "Vue.js",
+    "image": "/vuejs.png",
+    "url": "/vuejs"
+  },
+  {
+    "id": "go",
+    "name": "Go",
+    "image": "/go.png",
+    "url": "/go"
+  },
+  {
+    "id": "swift",
+    "name": "Swift",
+    "image": "/swift.png",
+    "url": "/swift"
+  },
+  {
+    "id": "kotlin",
+    "name": "Kotlin",
+    "image": "/kotlin.png",
+    "url": "/kotlin"
+  },
+  {
+    "id": "csharp",
+    "name": "C#",
+    "image": "/csharp.png",
+    "url": "/csharp"
+  },
+  {
+    "id": "java",
+    "name": "Java",
+    "image": "/java.png",
+    "url": "/java"
+  },
+  {
+    "id": "typescript",
+    "name": "TypeScript",
+    "image": "/typescript.png",
+    "url": "/typescript"
+  },
+  {
+    "id": "flutter",
+    "name": "Flutter",
+    "image": "/flutter.png",
+    "url": "/flutter"
+  },
+  {
+    "id": "laravel",
+    "name": "Laravel",
+    "image": "/laravel.png",
+    "url": "/laravel"
+  }
+]
