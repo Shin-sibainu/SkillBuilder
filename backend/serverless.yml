@@ -1,0 +1,58 @@
+service: backend
+frameworkVersion: "3"
+
+custom:
+  tableName: "users-table-${sls:stage}"
+  serverless-offline:
+    httpPort: 5000
+    noPrependStageInUrl: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-northeast-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [UsersTable, Arn]
+  environment:
+    USERS_TABLE: ${self:custom.tableName}
+
+functions:
+  api:
+    handler: index.handler
+    events:
+      - http:
+          method: ANY
+          path: "/"
+          cors: true
+      - http:
+          method: ANY
+          path: "/{any+}"
+          cors: true
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.tableName}
+
+plugins:
+  - serverless-offline
