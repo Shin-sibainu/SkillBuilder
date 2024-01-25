@@ -1,6 +1,6 @@
 import React from "react";
 import SkillCard from "../components/skillCard/skillCard";
-import skills from "../data/skills.json";
+import skills from "../../data/skills.json";
 
 const SkillBuild = () => {
   return (
