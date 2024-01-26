@@ -6,6 +6,9 @@ const {
 } = require("@aws-sdk/lib-dynamodb");
 const express = require("express");
 const serverlessExpress = require("@codegenie/serverless-express");
+require("dotenv").config();
+
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -13,13 +16,10 @@ const USERS_TABLE = process.env.USERS_TABLE;
 const client = new DynamoDBClient();
 const dynamoDbClient = DynamoDBDocumentClient.from(client);
 
-app.use(express.json());
+// 他のコード...
 
-app.get("/", (req, res, next) => {
-  return res.status(200).json({
-    message: "Hello from root!",
-  });
-});
+app.use(express.json());
+app.use("/auth", authRoutes);
 
 app.get("/users/:userId", async function (req, res) {
   const params = {
@@ -70,6 +70,7 @@ app.post("/users", async function (req, res) {
   }
 });
 
+//not found
 app.use((req, res, next) => {
   return res.status(404).json({
     error: "Not Found",
