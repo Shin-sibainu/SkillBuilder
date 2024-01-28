@@ -21,6 +21,10 @@ const dynamoDbClient = DynamoDBDocumentClient.from(client);
 app.use(express.json());
 app.use("/auth", authRoutes);
 
+app.get("/", (req, res) => {
+  return res.status(200).json("Hello");
+});
+
 app.get("/users/:userId", async function (req, res) {
   const params = {
     TableName: USERS_TABLE,

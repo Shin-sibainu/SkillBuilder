@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "deploy": "serverless deploy",
-    "dev": "serverless offline"
+    "dev": "serverless offline --noAuth"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.499.0",
