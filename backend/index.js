@@ -7,6 +7,7 @@ const {
 const express = require("express");
 const serverlessExpress = require("@codegenie/serverless-express");
 require("dotenv").config();
+const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
 
@@ -19,6 +20,7 @@ const dynamoDbClient = DynamoDBDocumentClient.from(client);
 // 他のコード...
 
 app.use(express.json());
+app.use(cors());
 app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {

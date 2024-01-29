@@ -7,4 +7,7 @@ export const formSchema = z.object({
   email: z
     .string()
     .email({ message: "適切なメールアドレスを入力してください。" }),
+  password: z
+    .string()
+    .min(8, { message: "パスワードは8文字以上で入力してください。" }),
 });

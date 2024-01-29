@@ -15,7 +15,8 @@ const cognito = new CognitoIdentityProvider({
 //signup
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body; // パスワードもリクエストから取得
-
+  console.log(username, email, password);
+  console.log("a");
   const params = {
     ClientId: "7ngliq861o3h9dco82hiibfham",
     Username: username,
