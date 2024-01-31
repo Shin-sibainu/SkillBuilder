@@ -1,16 +1,23 @@
 // login and signinForm
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchema } from "@/lib/formSchema";
-import { useCallback } from "react";
+// import { formSchema } from "@/lib/formSchema";
+import { loginFormSchema, signupFormSchema } from "@/lib/formSchema";
+import { useCallback, useState } from "react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 
-const useBasicForm = (actionType: string) => {
+type LoginFormValues = z.infer<typeof loginFormSchema>;
+type SignupFormValues = z.infer<typeof signupFormSchema>;
+
+const useBasicForm = (actionType: "login" | "signup") => {
+  const [serverError, setServerError] = useState<string>("");
   const router = useRouter();
 
+  const schema = actionType === "login" ? loginFormSchema : signupFormSchema;
+
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       username: "",
       email: "",
@@ -19,8 +26,14 @@ const useBasicForm = (actionType: string) => {
   });
 
   const onSubmit = useCallback(
-    async (values: z.infer<typeof formSchema>) => {
-      const { username, email, password } = values;
+    async (values: LoginFormValues | SignupFormValues) => {
+      const { username, password } = values;
+      let email = "";
+
+      // `email` プロパティが存在するかチェック
+      if ("email" in values) {
+        email = values.email;
+      }
 
       try {
         //login or signup api
@@ -39,27 +52,27 @@ const useBasicForm = (actionType: string) => {
           }),
         });
 
-        console.log(response.ok);
-        console.log(await response.json());
-        console.log(actionType);
-
         if (response.ok) {
+          setServerError("");
           if (actionType === "login") {
-            router.push("/skillbuild");
+            router.push("/skillBuild");
           } else if (actionType === "signup") {
-            console.log("signup");
+            localStorage.setItem("username", username);
             router.push("/confirm-code");
           }
         } else {
-          throw new Error("Failed to log in or sign up");
+          console.log("error");
+          //TODO:ログインの方でエラーになったときに存在しないのかそれとも区別がついてないのかの分岐ができてないから修正。
+          setServerError("パスワードは小文字と大文字と数字を含めてください。");
         }
       } catch (err) {
         console.error(err);
+        setServerError("An unknown error occurred"); // 不明なエラーが発生した場合のメッセージ
       }
     },
     [actionType, router]
   );
-  return { form, onSubmit };
+  return { form, onSubmit, serverError };
 };
 
 export default useBasicForm;

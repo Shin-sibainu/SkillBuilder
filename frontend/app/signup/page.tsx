@@ -5,13 +5,16 @@ import React from "react";
 import BasicAuthForm from "../components/form/BasicAuthForm";
 
 const SignUp = () => {
-  const { form, onSubmit } = useBasicForm("signup");
-  const {
-    register,
-    formState: { errors },
-  } = form; // `errors` オブジェクトを取得
+  const { form, onSubmit, serverError } = useBasicForm("signup");
 
-  return <BasicAuthForm form={form} onSubmit={onSubmit} title={"新規登録"} />;
+  return (
+    <BasicAuthForm
+      form={form}
+      onSubmit={onSubmit}
+      title={"新規登録"}
+      serverError={serverError}
+    />
+  );
 };
 
 export default SignUp;
