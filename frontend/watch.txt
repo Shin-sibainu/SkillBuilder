@@ -1,0 +1,28 @@
+ユーザーテーブル (Users)
+UserID: ユーザーを一意に識別するプライマリキー。
+Username: ユーザー名。
+Email: ユーザーのメールアドレス。
+PasswordHash: ハッシュ化されたパスワード。
+ProfileImageURL: プロファイル画像のURL（オプショナル）。
+このテーブルでは、UserID をプライマリキーとして、各ユーザーの情報を格納します。DynamoDBでは、これらの属性は単一のドキュメントとして保存されます。
+
+スキルテーブル (Skills)
+SkillID: スキルを一意に識別するプライマリキー。
+SkillName: スキル名。
+Details: スキルに関する詳細説明やカテゴリ（オプショナル）。
+スキルテーブルでは、SkillID をプライマリキーとして使用し、各スキルの基本情報を格納します。
+
+ユーザースキル進捗テーブル (UserSkillProgress)
+UserID: ユーザーID（プライマリキー）。
+SkillID: スキルID（ソートキー）。
+ProgressDetails: 進捗の詳細（例: チェック済み項目など）。
+Percentage: 習得度のパーセンテージ。
+LastUpdated: 最終更新日時。
+ユーザーとスキルの関連性を表すために、UserID と SkillID を組み合わせた複合プライマリキーを使用します。これにより、特定のユーザーの全スキル進捗を効率的にクエリできます。
+
+スキルチェックリストテーブル (SkillChecklist) - オプショナル
+SkillID: スキルID（プライマリキー）。
+ChecklistItemID: チェックリスト項目の一意識別子（ソートキー）。
+Description: チェックリスト項目の説明。
+Order: 項目の表示順序。
+CheckedState: チェック状態（例: true/false）。
