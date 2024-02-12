@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import NextLink from "../links/Link";
 
 const Header = () => {
   return (
@@ -19,19 +20,21 @@ const Header = () => {
               SkillBuilder
             </span>
           </Link>
-          <div className="flex items-center lg:order-2 mt-3 md:mt-0">
-            <Link
+          <div className="flex items-center lg:order-2 mt-3 md:mt-0 gap-3">
+            <NextLink
               href="/login"
-              className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+              textColor="text-white"
+              bgColor="bg-blue-500"
             >
               ログイン
-            </Link>
-            <Link
+            </NextLink>
+            <NextLink
               href="/skillBuild"
-              className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              textColor="text-black"
+              bgColor="bg-slate-100"
             >
               スキルビルド
-            </Link>
+            </NextLink>
           </div>
         </div>
       </nav>
