@@ -28,13 +28,7 @@ const Header = () => {
             >
               ログイン
             </NextLink>
-            <NextLink
-              href="/skillBuild"
-              textColor="text-black"
-              bgColor="bg-slate-100"
-            >
-              スキルビルド
-            </NextLink>
+            <NextLink href="/skillBuild">スキルビルド</NextLink>
           </div>
         </div>
       </nav>

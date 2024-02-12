@@ -8,20 +8,6 @@ interface CustomLinkProps {
   children: ReactNode;
 }
 
-// 背景色クラスからホバー時のクラスを生成する関数
-const generateHoverBgClass = (bgColorClass: string): string => {
-  const parts = bgColorClass.split("-");
-  if (parts.length > 1) {
-    const intensity = parseInt(parts[parts.length - 1], 10);
-    if (!isNaN(intensity) && intensity < 900) {
-      // 900未満の場合のみ暗くする
-      parts[parts.length - 1] = String(intensity + 100);
-      return `hover:${parts.join("-")}`; // 例: 'hover:bg-blue-600'
-    }
-  }
-  return "hover:bg-gray-600"; // デフォルトのホバー時背景色
-};
-
 const NextLink = ({
   href,
   textColor = "text-gray-900",
@@ -29,12 +15,10 @@ const NextLink = ({
   children,
 }: CustomLinkProps) => {
   const defaultClassName =
-    "inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center border border-gray-300 rounded-lg transition duration-150";
-
-  const hoverBgClass = generateHoverBgClass(bgColor);
+    "inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center border border-gray-300 rounded-lg duration-150";
 
   // テキスト色、背景色、ホバー時の背景色を適用
-  const combinedClassName = `${defaultClassName} ${textColor} ${bgColor} ${hoverBgClass}`;
+  const combinedClassName = `${defaultClassName} ${textColor} ${bgColor}`;
 
   return (
     <Link href={href} className={combinedClassName}>
