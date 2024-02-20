@@ -12,7 +12,13 @@ const cognito = new CognitoIdentityProvider({
   },
 });
 
-//user add to user Table
-router.post("/", async (req, res) => {});
+//signup
+router.post("/signup", async (req, res) => {});
+
+//confirmSignup
+router.post("/confirmSignup", async (req, res) => {});
+
+//login
+router.post("/login", async (req, res) => {});
 
 module.exports = router;

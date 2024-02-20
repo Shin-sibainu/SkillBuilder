@@ -10,6 +10,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -22,6 +23,7 @@ const dynamoDbClient = DynamoDBDocumentClient.from(client);
 app.use(express.json());
 app.use(cors());
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).json("Hello");

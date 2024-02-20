@@ -1,21 +1,54 @@
 "use client";
 
 import { useConfirmCode } from "@/hooks/useConfirmCode";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import InputField from "../components/form/inputs/InputFiled";
+import Button from "../components/buttons/Button";
 
 type FormData = {
-  code: string;
+  code: number;
 };
 
 const ConfirmCodePage = () => {
+  const router = useRouter();
+
+  const form = useForm<{ code: string }>({
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: { code: string }) => {
+    console.log(data);
+    const username = localStorage.getItem("username");
+    const { code } = data;
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/confirmSignup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, code }),
+        }
+      );
+
+      if (response.ok) {
+        router.push("/");
+      } else {
+        console.log(await response.json());
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
-
-  const { onSubmit, error } = useConfirmCode(); // エラー状態を受け取る
+  } = form;
 
   return (
     <form className="max-w-sm mx-auto mt-36" onSubmit={handleSubmit(onSubmit)}>
@@ -25,29 +58,20 @@ const ConfirmCodePage = () => {
       <p className="text-center mb-5">
         登録したメールアドレスを確認してください。
       </p>
-      <div className="mb-5">
-        <label
-          htmlFor="code"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          確認コード
-        </label>
-        <input
-          id="code"
-          type="text"
-          {...register("code", { required: "確認コードは必須です" })}
-          className="bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="確認コード"
-        />
-        {error && <p className="text-red-500">{error}</p>}
-      </div>
 
-      <button
-        type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
+      <InputField
+        register={register}
+        label="確認コード"
+        id="code"
+        type="text"
+        placeholder="確認コード"
+        errorMessage={errors.code?.message}
+        required={true}
+      />
+
+      <Button type="submit" bgColor="bg-blue-500" textColor="text-white">
         確認
-      </button>
+      </Button>
     </form>
   );
 };

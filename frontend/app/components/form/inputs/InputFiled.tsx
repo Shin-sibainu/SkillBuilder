@@ -13,10 +13,10 @@ interface FormData {
 interface InputFieldProps {
   label: string;
   type: string;
-  id: keyof FormData; // FormData のキーを id の型として使用
+  id: string; // FormData のキーを id の型として使用
   placeholder: string;
   errorMessage?: string;
-  register: UseFormRegister<FormData>; // register の型を UseFormRegister<FormData> に設定
+  register: UseFormRegister<any>; // register の型を UseFormRegister<FormData> に設定
   required: boolean;
 }
 const InputField: React.FC<InputFieldProps> = ({

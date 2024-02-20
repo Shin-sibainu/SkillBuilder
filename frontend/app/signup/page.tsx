@@ -6,15 +6,49 @@ import Link from "next/link";
 import { z } from "zod";
 import { signupFormSchema } from "@/lib/formSchema";
 import InputField from "../components/form/inputs/InputFiled";
+import Button from "../components/buttons/Button";
+import { error } from "console";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof signupFormSchema>>({
     mode: "onChange",
+    resolver: zodResolver(signupFormSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
   });
 
-  const onSubmit = (data: z.infer<typeof signupFormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
     console.log(data);
-    // 送信処理...
+    const { username, email, password } = data;
+    //api fetch (signup)
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, email, password }),
+        }
+      );
+
+      if (response.ok) {
+        localStorage.setItem("username", username);
+        router.push("/confirm-code");
+      } else {
+        console.log(await response.json());
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const {
@@ -58,14 +92,9 @@ const SignUp = () => {
           required={true}
         />
 
-        <div className="mt-6">
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-          >
-            新規登録
-          </button>
-        </div>
+        <Button bgColor="bg-blue-500" textColor="text-white" type="submit">
+          新規登録
+        </Button>
       </form>
       <div className="text-center mt-4">
         <Link href="/login" className="text-blue-600 hover:underline">

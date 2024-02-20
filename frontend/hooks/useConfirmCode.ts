@@ -6,7 +6,7 @@ export const useConfirmCode = () => {
   const router = useRouter();
 
   const onSubmit = useCallback(
-    async (formData: { code: string }) => {
+    async (formData: { code: number }) => {
       const { code } = formData; // フォームデータから確認コードを抽出
 
       const username = localStorage.getItem("username");
@@ -31,6 +31,7 @@ export const useConfirmCode = () => {
         } else {
           // エラーハンドリング
           // const errorData = await response.json(); // エラーレスポンスからエラーメッセージを取得
+          console.log(await response.json());
           setError("確認コードが間違っています。");
         }
       } catch (error) {
