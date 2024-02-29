@@ -7,12 +7,13 @@ import { z } from "zod";
 import { signupFormSchema } from "@/lib/formSchema";
 import InputField from "../components/form/inputs/InputFiled";
 import Button from "../components/buttons/Button";
-import { error } from "console";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const SignUp = () => {
   const router = useRouter();
+  const supabase = createClientComponentClient();
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     mode: "onChange",
@@ -25,27 +26,22 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
-    console.log(data);
     const { username, email, password } = data;
-    //api fetch (signup)
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, email, password }),
-        }
-      );
 
-      if (response.ok) {
-        localStorage.setItem("username", username);
-        router.push("/confirm-code");
-      } else {
-        console.log(await response.json());
+    try {
+      //supabase singin
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.log(error.message);
+        throw error;
       }
+
+      //user table insert to dynamodb(api)
+      router.push("/confirm-email");
     } catch (err) {
       console.error(err);
     }

@@ -14,7 +14,7 @@ const SkillCard = ({ skill }: SkilCardProps) => {
   } ${circumference}`;
   return (
     <Link
-      href={`/${skill.id}`}
+      href={`/skillBuild/${skill.id}`}
       className="card bg-white p-4 pt-7 shadow-md rounded text-center"
     >
       <div className="flex items-center justify-center gap-10">

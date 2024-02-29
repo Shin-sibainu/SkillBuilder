@@ -10,39 +10,36 @@ import Button from "../components/buttons/Button";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const Login = () => {
   const router = useRouter();
+  const supabase = createClientComponentClient();
+
   const form = useForm<z.infer<typeof loginFormSchema>>({
     mode: "onChange",
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-    console.log(data);
-    const { username, password } = data;
-    //api fetch (signup)
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+  const onSubmit = async (value: z.infer<typeof loginFormSchema>) => {
+    const { email, password } = value;
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (response.ok) {
-        router.push("/");
-      } else {
-        console.log(await response.json());
-      }
+    if (error) {
+      console.log(error.message);
+      throw error;
+    }
+
+    //user table insert to dynamodb(api)
+    router.push("/");
+    try {
     } catch (err) {
       console.error(err);
     }
@@ -60,11 +57,11 @@ const Login = () => {
         <h2 className="text-center mb-5 text-2xl font-medium">ログイン</h2>
 
         <InputField
-          label="ユーザー名"
-          type="text"
-          id="username"
-          placeholder="ユーザー名"
-          errorMessage={errors.username?.message}
+          label="メールアドレス"
+          type="email"
+          id="email"
+          placeholder="name@example.com"
+          errorMessage={errors.email?.message}
           register={register}
           required={true}
         />

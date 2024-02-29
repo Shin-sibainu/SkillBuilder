@@ -6,12 +6,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import InputField from "../components/form/inputs/InputFiled";
 import Button from "../components/buttons/Button";
+import Link from "next/link";
 
 type FormData = {
   code: number;
 };
 
-const ConfirmCodePage = () => {
+const ConfirmEmailPage = () => {
   const router = useRouter();
 
   const form = useForm<{ code: string }>({
@@ -19,7 +20,7 @@ const ConfirmCodePage = () => {
   });
 
   const onSubmit = async (data: { code: string }) => {
-    console.log(data);
+    // console.log(data);
     const username = localStorage.getItem("username");
     const { code } = data;
     try {
@@ -35,6 +36,7 @@ const ConfirmCodePage = () => {
       );
 
       if (response.ok) {
+        console.log(response);
         router.push("/");
       } else {
         console.log(await response.json());
@@ -51,7 +53,7 @@ const ConfirmCodePage = () => {
   } = form;
 
   return (
-    <form className="max-w-sm mx-auto mt-36" onSubmit={handleSubmit(onSubmit)}>
+    <div className="max-w-sm mx-auto mt-36" onSubmit={handleSubmit(onSubmit)}>
       <h2 className="text-center mb-3 text-2xl font-medium">
         確認コードを入力
       </h2>
@@ -59,21 +61,14 @@ const ConfirmCodePage = () => {
         登録したメールアドレスを確認してください。
       </p>
 
-      <InputField
-        register={register}
-        label="確認コード"
-        id="code"
-        type="text"
-        placeholder="確認コード"
-        errorMessage={errors.code?.message}
-        required={true}
-      />
-
-      <Button type="submit" bgColor="bg-blue-500" textColor="text-white">
-        確認
-      </Button>
-    </form>
+      <Link
+        href={"/signup"}
+        className="text-blue-500 text-center block mx-auto"
+      >
+        新規登録へ戻る
+      </Link>
+    </div>
   );
 };
 
-export default ConfirmCodePage;
+export default ConfirmEmailPage;
