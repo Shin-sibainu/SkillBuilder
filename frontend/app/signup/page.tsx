@@ -28,23 +28,39 @@ const SignUp = () => {
   const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
     const { username, email, password } = data;
 
+    // try {
+    //   //supabase singin
+    //   const { data, error } = await supabase.auth.signUp({
+    //     email,
+    //     password,
+    //   });
+
+    //   if (error) {
+    //     console.log(error.message);
+    //     throw error;
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
+
+    //user table insert to dynamodb(api)
     try {
-      //supabase singin
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: "data.user?.id", username, email }),
       });
 
-      if (error) {
-        console.log(error.message);
-        throw error;
+      if (!res.ok) {
+        console.log(res);
       }
-
-      //user table insert to dynamodb(api)
-      router.push("/confirm-email");
     } catch (err) {
       console.error(err);
     }
+
+    router.push("/confirm-email");
   };
 
   const {

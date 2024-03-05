@@ -1,15 +1,36 @@
 const express = require("express");
 const router = express.Router();
+// DynamoDBClientを@aws-sdk/client-dynamodbからインポート
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+// DynamoDBDocumentClientとコマンドを@aws-sdk/lib-dynamodbからインポート
 const {
-  CognitoIdentityProvider,
-} = require("@aws-sdk/client-cognito-identity-provider");
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} = require("@aws-sdk/lib-dynamodb");
 
-const cognito = new CognitoIdentityProvider({
-  region: "ap-northeast-1",
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
+const USERS_TABLE = process.env.USERS_TABLE;
+const client = new DynamoDBClient();
+const dynamoDbClient = DynamoDBDocumentClient.from(client);
+
+router.post("/", async (req, res) => {
+  const { userId, username, email } = req.body;
+
+  const params = {
+    TableName: USERS_TABLE,
+    Item: {
+      UserID: userId, // UserID はプライマリキー
+      Username: username, // ユーザー名
+      Email: email, // ユーザーのメールアドレス
+    },
+  };
+
+  try {
+    await dynamoDbClient.send(new PutCommand(params));
+    res.json({ userId, username, email });
+  } catch (error) {
+    res.status(500).json({ error: "Could not create user" });
+  }
 });
 
 module.exports = router;
