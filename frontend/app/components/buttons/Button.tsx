@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 interface CustomButtonProps {
   textColor?: string;
   bgColor?: string; // 例: 'bg-blue-500'
-  children: ReactNode;
+  children?: ReactNode;
   onClick?: () => void; // onClick プロパティの型を関数として定義
   type: "button" | "submit" | "reset";
 }

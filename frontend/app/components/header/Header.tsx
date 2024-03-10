@@ -1,9 +1,17 @@
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import Button from "../buttons/Button";
 import NextLink from "../links/Link";
+import AuthClientButton from "../buttons/AuthClientButton";
 
-const Header = () => {
+const Header = async () => {
+  const supabase = createServerComponentClient({ cookies });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   return (
     <header>
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -21,13 +29,23 @@ const Header = () => {
             </span>
           </Link>
           <div className="flex items-center lg:order-2 mt-3 md:mt-0 gap-3">
-            <NextLink
-              href="/login"
-              textColor="text-white"
-              bgColor="bg-blue-500"
-            >
-              ログイン
-            </NextLink>
+            {session ? (
+              <AuthClientButton
+                type="button"
+                bgColor="bg-blue-500"
+                textColor="text-white"
+              >
+                ログアウト
+              </AuthClientButton>
+            ) : (
+              <NextLink
+                href="/login"
+                textColor="text-white"
+                bgColor="bg-blue-500"
+              >
+                ログイン
+              </NextLink>
+            )}
             <NextLink href="/skillBuild">スキルビルド</NextLink>
           </div>
         </div>
