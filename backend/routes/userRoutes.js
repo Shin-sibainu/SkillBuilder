@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
   const { userId, username, email } = req.body;
 
   const params = {
-    TableName: USERS_TABLE,
+    TableName: "UserTable",
     Item: {
       UserID: userId, // UserID はプライマリキー
       Username: username, // ユーザー名
@@ -31,7 +31,9 @@ router.post("/", async (req, res) => {
     await dynamoDbClient.send(new PutCommand(params));
     res.json({ userId, username, email });
   } catch (error) {
-    res.status(500).json({ error: "Could not create user" });
+    console.error(error);
+    // res.status(500).json({ error: "Could not create user" });
+    res.status(500).json({ error });
   }
 });
 

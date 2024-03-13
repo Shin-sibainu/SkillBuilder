@@ -28,38 +28,48 @@ const SignUp = () => {
   const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
     const { username, email, password } = data;
 
-    // try {
-    //   //supabase singin
-    //   const { data, error } = await supabase.auth.signUp({
-    //     email,
-    //     password,
-    //   });
-
-    //   if (error) {
-    //     console.log(error.message);
-    //     throw error;
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
-    //user table insert to dynamodb(api)
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: "data.user?.id", username, email }),
+      //supabase singin
+      const { data: signUpData, error } = await supabase.auth.signUp({
+        email,
+        password,
       });
 
-      if (!res.ok) {
-        console.log(res);
+      if (error) {
+        console.log(error.message);
+        throw error;
+      }
+
+      if (signUpData && signUpData.user) {
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              // Use signUpData.user.id here
+              body: JSON.stringify({
+                userId: signUpData.user.id,
+                username,
+                email,
+              }),
+            }
+          );
+
+          if (!res.ok) {
+            // Handle response error
+            console.log(res);
+            throw new Error("Failed to insert user data into DynamoDB");
+          }
+        } catch (err) {
+          console.error(err);
+        }
       }
     } catch (err) {
       console.error(err);
     }
-
     router.push("/confirm-email");
   };
 
