@@ -3,6 +3,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Button from "./Button";
 import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 interface CustomButtonProps {
   textColor?: string;
@@ -18,10 +19,12 @@ const AuthClientButton = ({
   children,
   type,
 }: CustomButtonProps) => {
+  const router = useRouter();
   const supabase = createClientComponentClient();
 
   const handleSignOut = async () => {
-    supabase.auth.signOut();
+    await supabase.auth.signOut();
+    router.refresh();
   };
 
   return (

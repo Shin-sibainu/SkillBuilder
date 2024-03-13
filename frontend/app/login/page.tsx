@@ -39,6 +39,7 @@ const Login = () => {
 
     //user table insert to dynamodb(api)
     router.push("/");
+    router.refresh();
     try {
     } catch (err) {
       console.error(err);

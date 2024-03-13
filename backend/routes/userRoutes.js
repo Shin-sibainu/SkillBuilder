@@ -25,6 +25,8 @@ router.post("/", async (req, res) => {
     },
   };
 
+  console.log(userId, username, email);
+
   try {
     await dynamoDbClient.send(new PutCommand(params));
     res.json({ userId, username, email });
